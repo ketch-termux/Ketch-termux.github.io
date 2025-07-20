@@ -4,90 +4,136 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pushforce - Verificador</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #1e1e2e;
+      --text: #dcdfe4;
+      --subtext: #9ca0b0;
+      --green: #00ff95;
+      --blue: #61dafb;
+      --panel: #2b2f40;
+    }
+
     body {
-      font-family: sans-serif;
-      background: #f4f4f4;
-      color: #222;
-      padding: 2rem;
-      max-width: 800px;
+      font-family: 'Fira Code', monospace;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 2rem 1rem;
+      max-width: 860px;
       margin: auto;
+      line-height: 1.6;
     }
+
     h1, h2, h3 {
-      color: #444;
+      color: var(--blue);
     }
+
+    p, li {
+      font-size: 0.95rem;
+    }
+
     pre {
-      background: #222;
-      color: #0f0;
+      background: #0d1117;
+      color: var(--green);
       padding: 1rem;
-      border-radius: 0.5rem;
+      border-radius: 6px;
       overflow-x: auto;
+      font-size: 0.9rem;
+      margin: 0;
     }
+
     .code-block {
       position: relative;
       margin-bottom: 2rem;
     }
+
     .copy-btn {
       position: absolute;
-      top: -2rem;
+      top: -1.6rem;
       right: 0;
-      background: #007bff;
-      color: white;
+      background: var(--blue);
+      color: #000;
       border: none;
       padding: 0.3rem 0.6rem;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
+      transition: background 0.3s ease;
     }
+
     .copy-btn:hover {
-      background: #0056b3;
+      background: #21b3e3;
+    }
+
+    code {
+      background: #2d333b;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #79c0ff;
+    }
+
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      .copy-btn {
+        top: -2rem;
+        font-size: 0.7rem;
+      }
     }
   </style>
 </head>
 <body>
 
   <h1>Pushforce</h1>
-  <h2>Verificador para PushForce</h2>
+  <h2>Verificador para entornos Termux</h2>
   <p>
-    Este script verifica si tu entorno en Termux está listo para usar <code>pushforce.sh</code>. Detecta Git, tu configuración de nombre y correo, credenciales de GitHub y si tienes el alias <code>push</code>.
+    Este script verifica si tu entorno en Termux está listo para usar <code>pushforce.sh</code>. Detecta Git, tu configuración, credenciales de GitHub y si el alias <code>push</code> está disponible.
   </p>
 
-  <h3>Opciones</h3>
+  <h3>Modo demostración</h3>
   <div class="code-block">
     <button class="copy-btn" data-code="-test">Copiar</button>
-    <pre>-test   # Simula todo el proceso sin ejecutar nada (modo demostración)</pre>
+    <pre>-test   # Simula todo el proceso sin ejecutar comandos</pre>
   </div>
 
-  <h2>Cómo usarlo sin descargarlo (desde GitHub)</h2>
+  <h2>Ejecutar sin descarga</h2>
 
-  <h3>Método 1: Usando curl</h3>
+  <h3>Con curl</h3>
   <div class="code-block">
-    <button class="copy-btn" data-code="bash &lt;(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)">Copiar</button>
-    <pre>bash &lt;(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)</pre>
+    <button class="copy-btn" data-code="bash <(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)">Copiar</button>
+    <pre>bash <(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)</pre>
   </div>
 
-  <h3>Método 2: Usando wget</h3>
+  <h3>Con wget</h3>
   <div class="code-block">
-    <button class="copy-btn" data-code="bash &lt;(wget -qO- https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)">Copiar</button>
-    <pre>bash &lt;(wget -qO- https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)</pre>
+    <button class="copy-btn" data-code="bash <(wget -qO- https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)">Copiar</button>
+    <pre>bash <(wget -qO- https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)</pre>
   </div>
 
-  <h3>Modo de prueba (-test)</h3>
+  <h3>Modo prueba (-test)</h3>
   <div class="code-block">
-    <button class="copy-btn" data-code="bash &lt;(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh) -test">Copiar</button>
-    <pre>bash &lt;(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh) -test</pre>
-  </div>
-<br>
-  <div class="code-block">
-    <button class="copy-btn" data-code="bash &lt;(wget -qO- https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh) -test">Copiar</button>
-    <pre>bash &lt;(wget -qO- https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh) -test</pre>
+    <button class="copy-btn" data-code="bash <(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh) -test">Copiar</button>
+    <pre>bash <(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh) -test</pre>
   </div>
 
-  <h2>Alias útil</h2>
-  <p>Agrega esto a tu <code>~/.bashrc</code> o <code>~/.zshrc</code>:</p>
   <div class="code-block">
-    <button class="copy-btn" data-code="alias verifypush='bash &lt;(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)'">Copiar</button>
-    <pre>alias verifypush='bash &lt;(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)'</pre>
+    <button class="copy-btn" data-code="bash <(wget -qO- https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh) -test">Copiar</button>
+    <pre>bash <(wget -qO- https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh) -test</pre>
+  </div>
+
+  <h2>Alias recomendado</h2>
+  <p>Agrega lo siguiente a tu archivo <code>~/.bashrc</code> o <code>~/.zshrc</code>:</p>
+  <div class="code-block">
+    <button class="copy-btn" data-code="alias verifypush='bash <(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)'">Copiar</button>
+    <pre>alias verifypush='bash <(curl -s https://raw.githubusercontent.com/ketch502m/pushforce/main/verify.sh)'</pre>
   </div>
 
   <p>Y luego ejecuta:</p>
@@ -96,67 +142,65 @@
     <pre>verifypush -test</pre>
   </div>
 
-  <h2>Requisitos</h2>
+  <h2>Requisitos del sistema</h2>
   <ul>
-    <li>Termux con bash</li>
-    <li>Conexión a Internet</li>
-    <li>curl o wget (Termux ya tiene curl)</li>
+    <li>Termux con <code>bash</code></li>
+    <li>Conexión activa a Internet</li>
+    <li><code>curl</code> o <code>wget</code></li>
   </ul>
 
-  <h2>¿Qué verifica el script?</h2>
+  <h2>¿Qué valida el script?</h2>
   <ol>
-    <li>Que Git esté instalado (y lo instala si no).</li>
-    <li>Que tu nombre y correo de Git estén configurados.</li>
-    <li>Que tengas tu token personal de GitHub guardado.</li>
-    <li>Que el alias <code>push</code> apunte a un <code>pushforce.sh</code> funcional.</li>
+    <li>Que Git esté instalado (y lo instala si no lo está).</li>
+    <li>Que tengas nombre y correo en Git configurados.</li>
+    <li>Que poseas un token personal de GitHub.</li>
+    <li>Que tengas el alias <code>push</code> apuntando a <code>pushforce.sh</code>.</li>
   </ol>
 
   <h2>¿Cómo obtener <code>pushforce.sh</code>?</h2>
 
-  <h3>Opción 1: curl</h3>
+  <h3>1. curl</h3>
   <div class="code-block">
     <button class="copy-btn" data-code="curl -o ~/pushforce.sh https://raw.githubusercontent.com/ketch502m/pushforce/main/pushforce.sh">Copiar</button>
     <pre>curl -o ~/pushforce.sh https://raw.githubusercontent.com/ketch502m/pushforce/main/pushforce.sh</pre>
   </div>
 
-  <h3>Opción 2: wget</h3>
+  <h3>2. wget</h3>
   <div class="code-block">
     <button class="copy-btn" data-code="wget -O ~/pushforce.sh https://raw.githubusercontent.com/ketch502m/pushforce/main/pushforce.sh">Copiar</button>
     <pre>wget -O ~/pushforce.sh https://raw.githubusercontent.com/ketch502m/pushforce/main/pushforce.sh</pre>
   </div>
-<br>
+
   <div class="code-block">
     <button class="copy-btn" data-code="chmod +x ~/pushforce.sh">Copiar</button>
     <pre>chmod +x ~/pushforce.sh</pre>
   </div>
 
-  <h3>Opción 3: Clonar el repositorio</h3>
+  <h3>3. Clonando el repositorio</h3>
   <div class="code-block">
     <button class="copy-btn" data-code="git clone https://github.com/ketch502m/pushforce.git">Copiar</button>
     <pre>git clone https://github.com/ketch502m/pushforce.git</pre>
   </div>
-  <br>
+
   <div class="code-block">
-    <button class="copy-btn" data-code="cd pushforce
-chmod +x pushforce.sh verify.sh">Copiar</button>
-    <pre>cd pushforce
-chmod +x pushforce.sh verify.sh</pre>
+    <button class="copy-btn" data-code="cd pushforce && chmod +x pushforce.sh verify.sh">Copiar</button>
+    <pre>cd pushforce && chmod +x pushforce.sh verify.sh</pre>
   </div>
-  <br>
+
   <div class="code-block">
     <button class="copy-btn" data-code="mv pushforce.sh ~/pushforce.sh">Copiar</button>
     <pre>mv pushforce.sh ~/pushforce.sh</pre>
   </div>
-<br>
+
   <div class="code-block">
-    <button class="copy-btn" data-code="echo &quot;alias push='bash ~/pushforce.sh'&quot; &gt;&gt; ~/.bashrc && source ~/.bashrc">Copiar</button>
+    <button class="copy-btn" data-code='echo "alias push='bash ~/pushforce.sh'" >> ~/.bashrc && source ~/.bashrc'>Copiar</button>
     <pre>echo "alias push='bash ~/pushforce.sh'" >> ~/.bashrc && source ~/.bashrc</pre>
   </div>
 
   <script>
     document.querySelectorAll('.copy-btn').forEach(button => {
       button.addEventListener('click', () => {
-        const text = button.getAttribute('data-code').replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+        const text = button.getAttribute('data-code');
         navigator.clipboard.writeText(text);
         button.textContent = '¡Copiado!';
         setTimeout(() => button.textContent = 'Copiar', 2000);
@@ -165,5 +209,3 @@ chmod +x pushforce.sh verify.sh</pre>
   </script>
 </body>
 </html>
-
-
