@@ -58,6 +58,7 @@
       border-radius: 6px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       transition: background 0.3s ease;
+      cursor: pointer;
     }
 
     .file-item:hover {
@@ -76,20 +77,26 @@
       margin-bottom: 0.5rem;
     }
 
-    .file-link {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 0.85rem;
-    }
-
-    .file-link:hover {
-      text-decoration: underline;
-    }
-
     .loading, .error {
       text-align: center;
       color: #ccc;
       margin-top: 1.5rem;
+    }
+
+    .guide-content {
+      max-width: 800px;
+      margin: 2rem auto;
+      background-color: #2b2b3d;
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+
+    .back-link {
+      color: var(--accent);
+      text-decoration: underline;
+      cursor: pointer;
+      display: block;
+      margin-top: 2rem;
     }
 
     @media (max-width: 600px) {
@@ -101,7 +108,7 @@
         font-size: 1rem;
       }
 
-      .file-desc, .file-link {
+      .file-desc {
         font-size: 0.85rem;
       }
     }
@@ -112,44 +119,102 @@
     <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Termux.svg" alt="Logo Termux" />
   </div>
 
-  <h1>Guías de instalación en Termux</h1>
-
+  <h1 id="pageTitle">Guías de instalación en Termux</h1>
   <div class="file-list" id="guideList">
     <!-- Elemento fijo -->
-    <div class="file-item">
+    <div class="file-item" onclick="location.href='./pushforce/'">
       <p class="file-title">Guía: Push y Commits en GitHub con Termux</p>
       <p class="file-desc">Instrucciones paso a paso para descargar y ejecutar el script</p>
-      <a href="./pushforce/index.html" class="file-link">Ver guía</a>
     </div>
   </div>
-
-  <p class="loading" id="loading">⌛ Cargando guías adicionales...</p>
-  <p class="error" id="error" style="display:none;">⚠️ No se pudieron cargar las guías. Intenta más tarde.</p>
+  
+  <div class="loading" id="loading">⌛ Cargando guías...</div>
+  <div class="error" id="error" style="display:none;">⚠️ No se pudieron cargar las guías. Intenta más tarde.</div>
+  <div class="guide-content" id="guideContent" style="display:none;"></div>
 
   <script>
+  const guideList = document.getElementById('guideList');
+  const loading = document.getElementById('loading');
+  const error = document.getElementById('error');
+  const guideContent = document.getElementById('guideContent');
+  const pageTitle = document.getElementById('pageTitle');
+
+  function getSlug() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const querySlug = urlParams.get('slug');
+    if (querySlug) return querySlug;
+
+    const parts = location.pathname.split('/').filter(Boolean);
+    return parts.length === 1 ? parts[0] : null;
+  }
+
+  function showHome() {
+    history.pushState({}, '', '/');
+    pageTitle.textContent = 'Guías de instalación en Termux';
+    guideList.style.display = 'flex';
+    guideContent.style.display = 'none';
+  }
+
+  function showGuide(slug) {
+    if (!slug || slug === 'undefined') return showHome();
+
+    history.pushState({}, '', `/${slug}/`);
+    loading.style.display = 'block';
+    guideList.style.display = 'none';
+    guideContent.style.display = 'none';
+
+    fetch(`https://api.healtpix.com/api/guides/${slug}`)
+      .then(res => {
+        if (!res.ok) throw new Error('404');
+        return res.text();
+      })
+      .then(html => {
+        loading.style.display = 'none';
+        pageTitle.textContent = `Guía: ${slug}`;
+        guideContent.innerHTML = html + `<span class="back-link" onclick="showHome()">← Volver</span>`;
+        guideContent.style.display = 'block';
+      })
+      .catch(() => {
+        loading.style.display = 'none';
+        guideContent.innerHTML = '<p class="error">No se pudo cargar la guía.</p><span class="back-link" onclick="showHome()">← Volver</span>';
+        guideContent.style.display = 'block';
+      });
+  }
+
+  function loadGuides() {
     fetch('https://api.healtpix.com/api/guides')
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById('guideList');
-        const loading = document.getElementById('loading');
-        const error = document.getElementById('error');
         loading.style.display = 'none';
-
         data.forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'file-item';
-          div.innerHTML = `
+          const card = document.createElement('div');
+          card.className = 'file-item';
+          card.innerHTML = `
             <p class="file-title">${item.title}</p>
             <p class="file-desc">${item.description}</p>
-            <a href="${item.url}" class="file-link">Ver guía</a>
           `;
-          container.appendChild(div);
+          card.onclick = () => showGuide(item.slug);
+          guideList.appendChild(card);
         });
       })
-      .catch(err => {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('error').style.display = 'block';
+      .catch(() => {
+        loading.style.display = 'none';
+        error.style.display = 'block';
       });
-  </script>
+  }
+
+  window.addEventListener('popstate', () => {
+    const slug = getSlug();
+    if (slug) showGuide(slug);
+    else showHome();
+  });
+
+  const initialSlug = getSlug();
+  if (initialSlug) {
+    showGuide(initialSlug);
+  } else {
+    loadGuides();
+  }
+</script>
 </body>
 </html>
