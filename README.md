@@ -1,1 +1,1 @@
-# Un repo de ¿termux.healtpix.com?
+# Un repo que está en ¿termux.healtpix.com?
