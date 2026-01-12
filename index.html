@@ -163,7 +163,7 @@
     guideList.style.display = 'none';
     guideContent.style.display = 'none';
 
-    fetch(`https://api.healtpix.com/api/guides/${slug}`)
+    fetch(`https://www.healtpix.com/api/guides/${slug}`)
       .then(res => {
         if (!res.ok) throw new Error('404');
         return res.text();
@@ -182,7 +182,7 @@
   }
 
   function loadGuides() {
-    fetch('https://api.healtpix.com/api/guides')
+    fetch('https://www.healtpix.com/api/guides')
       .then(res => res.json())
       .then(data => {
         loading.style.display = 'none';
